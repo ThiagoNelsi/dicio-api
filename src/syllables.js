@@ -1,33 +1,33 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
-const sanitizeWord = require('./utils/sanitizeWord');
+const axios = require("axios")
+const cheerio = require("cheerio")
+const sanitizeWord = require("./utils/sanitizeWord")
 
 module.exports = async (req, res) => {
-
-  const { word } = req.params;
-  const sanitizedWord = sanitizeWord(word);
+  const { word } = req.params
+  const sanitizedWord = sanitizeWord(word)
 
   try {
+    const { data: dicioHTML } = await axios.get(
+      `https://dicio.com.br/${sanitizedWord}`
+    )
 
-    const { data: dicioHTML } = await axios.get(`https://dicio.com.br/${sanitizedWord}`);
+    const $ = cheerio.load(dicioHTML)
 
-    const $ = cheerio.load(dicioHTML);
-
-    const additionalText = $('.adicional').text();
-    const syllabicMatches = additionalText.match(/(?<=silábica: ).+(\n|$)/i);
+    const additionalText = $(".adicional").text()
+    const syllabicMatches = additionalText.match(/(?<=silábica: ).+(\n|$)/i)
     if (!syllabicMatches)
-      throw `Could not parse silabic matches from "${additionalText}"`;
+      throw new Error(
+        `Could not parse silabic matches from "${additionalText}"`
+      )
 
     const syllablesInfo = {
-    syllablesText: syllabicMatches[0].trim(),
-    syllablesCount: syllabicMatches[0].split('-').length
+      syllablesText: syllabicMatches[0].trim(),
+      syllablesCount: syllabicMatches[0].split("-").length,
     }
 
-    res.json(syllablesInfo);
-
-
+    res.json(syllablesInfo)
   } catch (err) {
-    console.log(err);
+    console.log(err)
     res.status(400).json({ error: err.message })
   }
 }

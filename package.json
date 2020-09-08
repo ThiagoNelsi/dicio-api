@@ -2,14 +2,14 @@
   "name": "dicio-api",
   "version": "1.0.2",
   "description": "Rest API of Portuguese (pt-br) dictionary",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": "https://github.com/ThiagoNelsi/dicio-api.git",
   "author": "Thiago Nelsi do Couto <thiagonelsi@gmail.com>",
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "start": "node",
+    "dev": "nodemon"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -17,6 +17,25 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.3"
+    "eslint": "^7.8.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.3.0",
+    "nodemon": "^2.0.3",
+    "prettier": "^2.1.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   }
 }

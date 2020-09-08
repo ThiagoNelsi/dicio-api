@@ -1,0 +1,4 @@
+{
+  "ignore":["node_modules/","*.log","*.json"],
+  "verbose": false
+}

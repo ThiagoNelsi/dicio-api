@@ -1,31 +1,28 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
-const sanitizeWord = require('./utils/sanitizeWord');
+const axios = require("axios")
+const cheerio = require("cheerio")
+const sanitizeWord = require("./utils/sanitizeWord")
 
 module.exports = async (req, res) => {
-
-  const { word } = req.params;
-  const sanitizedWord = sanitizeWord(word);
+  const { word } = req.params
+  const sanitizedWord = sanitizeWord(word)
 
   try {
+    const { data: dicioHTML } = await axios.get(
+      `https://dicio.com.br/${sanitizedWord}`
+    )
 
-    const { data: dicioHTML } = await axios.get(`https://dicio.com.br/${sanitizedWord}`);
+    const $ = cheerio.load(dicioHTML)
 
-    const $ = cheerio.load(dicioHTML);
+    const synonyms = []
+    $("a", ".sinonimos").each((_, element) => {
+      const text = $(element).text()
 
-    const synonyms = [];
-    $('a', '.sinonimos').each((_, element) => {
+      if (text) synonyms.push(text)
+    })
 
-      const text = $(element).text();
-
-      if (text)
-        synonyms.push(text)
-    });
-
-    res.json(synonyms);
-
+    res.json(synonyms)
   } catch (err) {
-    console.log(err);
+    console.log(err)
     res.status(400).json({ error: err.message })
   }
 }
