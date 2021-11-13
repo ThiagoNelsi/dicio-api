@@ -32,6 +32,21 @@ Response:
 
 <br />
 
+##### Significados: GET `/allMeanings/[word]`:   
+Response:
+```js
+[
+  {
+    title: String,
+    class: String,
+    meanings: [String],
+    etymology: String,
+  }
+]
+```
+
+<br />
+
 ##### Sinônimos: GET `/synonyms/[word]`:   
 Response:
 ```js
@@ -148,6 +163,40 @@ são divididos em outro objeto
 ```
 
 #### Informações adicionais sobre a palavra:
+
+Todas as acentuações: https://significado.herokuapp.com/allMeanings/metro
+
+Retorna os significados de todas as grafias de acentuações possíveis para a palavra inserida, diferenciando pela chave "title".
+
+**Exemplo com a palavra `metro`**
+
+```js
+[
+    {
+        "title": "metro",
+        "class": "substantivo masculino",
+        "meanings": [
+            "Unidade fundamental das medidas compreendidas no sistema métrico.",
+            "Unidade de medida utilizada para medir o comprimento, estabelecida pelo Sistema Internacional de Unidades (SI), determinada pela distância percorrida pela luz no vácuo, no decorrer de um espaço de tempo, cuja correspondência é igual a de uma fração de 1/299.792.458 de segundo.",
+            "Qualquer instrumento, geralmente uma fita ou uma vareta, que demonstra essa medida de comprimento.",
+            "Versificação. Medida estrutural de organização que determina o número de sílabas ou do conjunto de pés de um verso.",
+            "Versificação. Modo ou formato rítmico de uma composição poética.",
+            "[Música] Disposição de modo organizado das pulsações em modelos permanentes de acentuação.",
+            "[Portugal] Forma abreviada de metropolitano - refere-se, neste caso, ao sistema de transporte, conhecido no Brasil como: metrô."
+        ],
+        "etymology": "Etimologia (origem da palavra metro). Do grego metrón.ou."
+    },
+    {
+        "title": "metrô",
+        "class": "substantivo masculino",
+        "meanings": [
+            "Abreviatura de metropolitano, estrada de ferro urbana, total ou parcialmente subterrânea."
+        ],
+        "etymology": ""
+    }
+]
+
+```
 
 Sinônimos: https://significado.herokuapp.com/synonyms/livro
 
