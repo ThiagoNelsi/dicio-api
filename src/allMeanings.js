@@ -14,20 +14,27 @@ module.exports = async (req, res) => {
     while (noError) {
       try {
         var title = "";
-        var dicioResp = "";
+        var baseUrl = `https://www.dicio.com.br/${sanitizedWord}`
+        var followUrl = `https://www.dicio.com.br/${sanitizedWord}-${i}`
+       
         if (i === 1) {
           const { data: dicioHTML } = await axios.get(
-            `https://dicio.com.br/${sanitizedWord}`
+            baseUrl
           );
           dicioResp = dicioHTML;
         } else {
           const { data: dicioHTML } = await axios.get(
-            `https://dicio.com.br/${sanitizedWord}-${i}`
+            followUrl
           );
           dicioResp = dicioHTML;
         }
 
         const $ = cheerio.load(dicioResp);
+        if (followUrl +"/" != $("[rel$='canonical']").attr("href") && i > 1) {
+          noError = false;
+          break;
+        }
+
         const structure = {
           title: "",
           class: "",
