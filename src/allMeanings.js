@@ -8,15 +8,13 @@ module.exports = async (req, res) => {
 
   try {
     const meanings = [];
-    var noError = true;
 
     var i = 1;
-    while (noError) {
+    while (true) {
       try {
-        var title = "";
-        var baseUrl = `https://www.dicio.com.br/${sanitizedWord}`
-        var followUrl = `https://www.dicio.com.br/${sanitizedWord}-${i}`
-       
+        let word = "";
+        let baseUrl = `https://www.dicio.com.br/${sanitizedWord}`
+        let followUrl = `https://www.dicio.com.br/${sanitizedWord}-${i}`
         if (i === 1) {
           const { data: dicioHTML } = await axios.get(
             baseUrl
@@ -29,30 +27,29 @@ module.exports = async (req, res) => {
           dicioResp = dicioHTML;
         }
 
-        const $ = cheerio.load(dicioResp);
-        if (followUrl +"/" != $("[rel$='canonical']").attr("href") && i > 1) {
-          noError = false;
-          break;
-        }
+        const $ = cheerio.load(dicioResp); 
+
+        if (isRedirectUrl(followUrl, i, $)) {break;}
 
         const structure = {
-          title: "",
+          word: "",
           class: "",
           meanings: [],
           etymology: "",
         };
         meanings.push(structure);
 
+        //Sanitização da palavra no título - Remove quebras de linha, espaços, e o texto do botão do facebook no título
         $(".title-header").each((_, element) => {
           let text = $(element).text();
-          title = text
+          word = text
             .trim()
             .replace(/(\r\n|\n|\r)/gm, "")
             .substring(15)
             .trim();
-          meanings[meanings.length - 1].title = title
+          meanings[meanings.length - 1].word = word
         });
-
+        
         $(".significado span").each((_, element) => {
           const text = $(element).text();
           const cheerioElement = $(element);
@@ -63,7 +60,7 @@ module.exports = async (req, res) => {
               meanings[meanings.length - 1].class = text;
             } else {
               meanings.push({
-                title : title,
+                word : word,
                 class: text,
                 meanings: [],
                 etymology: "",
@@ -76,7 +73,6 @@ module.exports = async (req, res) => {
             meanings[meanings.length - 1].meanings.push(text);
           }
         });
-
         $(".conjugacao span").each((_, element) => {
           const text = $(element).text();
           const cheerioElement = $(element);
@@ -86,16 +82,21 @@ module.exports = async (req, res) => {
           else if (!cheerioElement.hasClass("tag")){
             meanings[meanings.length].meanings.push(text);}
         });
-
         i++;
       } catch (err) {
-        noError = false;        
+        break        
       }
     }
-
     res.json(meanings);
   } catch (err) {
-    console.log(err);
     res.status(400).json({ error: err.message });
   }
 };
+
+// Verifica se é um redireciomento
+function isRedirectUrl(followUrl, i, $) {  
+  if (followUrl +"/" != $("[rel$='canonical']").attr("href") && i > 1) {
+    return true;
+  }
+  return false;
+}
