@@ -21,3 +21,5 @@ app.get('/sentences/:word', sentence);
 
 
 app.listen(process.env.PORT || 3333);
+
+module.exports = { app }
