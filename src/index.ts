@@ -17,5 +17,3 @@ const server: Server = new Server();
 
   server.start(Number(process.env.PORT) || 3333);
 })();
-
-export default server.app;
