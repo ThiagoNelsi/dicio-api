@@ -5,6 +5,7 @@ import extractMeanings from '../scrappers/meanings';
 import extractSynonyms from '../scrappers/synonyms';
 import extractSyllables from '../scrappers/syllables';
 import extractSentences from '../scrappers/sentences';
+import extractRhymes from '../scrappers/rhymes';
 import database from './mongodb/mongodb';
 import log from '../utils/logger';
 
@@ -21,6 +22,7 @@ export default async function getWordInfo(word: string): Promise<IWordInfo> {
     const synonyms = extractSynonyms(html);
     const syllables = extractSyllables(html);
     const sentences = extractSentences(html);
+    const rhymes = extractRhymes(html);
 
     const wordInfo: IWordInfo = {
       word,
@@ -29,6 +31,7 @@ export default async function getWordInfo(word: string): Promise<IWordInfo> {
       meanings,
       sentences,
       syllables,
+      rhymes,
     };
 
     database.insert(wordInfo);

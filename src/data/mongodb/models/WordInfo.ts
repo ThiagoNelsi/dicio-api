@@ -40,6 +40,7 @@ const WordInfoSchema = new mongoose.Schema<IWordInfo>({
   sentences: [SentenceSchema],
   synonyms: [String],
   syllables: [String],
+  rhymes: [String],
   url: String,
 });
 

@@ -45,6 +45,7 @@ class MongoDB implements IDatabase {
           meanings: wordInfo.meanings,
           sentences: wordInfo.sentences,
           syllables: wordInfo.syllables,
+          rhymes: wordInfo.rhymes,
         };
       }
       return undefined;

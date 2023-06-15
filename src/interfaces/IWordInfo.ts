@@ -8,6 +8,7 @@ interface IWordInfo {
   sentences: ISentence[];
   syllables: string[];
   synonyms: string[];
+  rhymes: string[];
 }
 
 export default IWordInfo;

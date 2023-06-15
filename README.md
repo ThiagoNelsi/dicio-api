@@ -14,6 +14,7 @@ A API está atualmente na **versão 2**, em que é possível acessar os seguinte
 > - SINÔNIMOS
 > - SEPARAÇÃO SILÁBICA
 > - EXEMPLOS DE FRASES
+> - RIMAS
 
 <br />
 
@@ -94,6 +95,20 @@ Response:
     author: string
   }
 ]
+```
+
+<br />
+
+#### ***Rimas***
+
+As rimas podem ser acessadas através do método GET em qualquer uma das seguintes rotas:
+
+- `/rimas/[palavra]`
+- `/rhymes/[palavra]`
+
+Response:
+```ts
+string[]
 ```
 
 * * *
@@ -219,5 +234,19 @@ https://dicio-api-ten.vercel.app/v2/frases/livro
     "sentence": "Veja abaixo trecho do livro com descrição dos melhores locais para visitar na \"cidade maravilhosa\".",
     "author": "Folha de S.Paulo, 02/10/2009"
   }
+]
+```
+
+### Rimas:
+
+https://significado.herokuapp.com/v2/rimas/apologia
+
+```json
+[
+  "fria",
+  "luzidia",
+  ...,
+  "urgia",
+  "alegria"
 ]
 ```
