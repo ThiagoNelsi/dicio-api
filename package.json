@@ -19,7 +19,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.1",
-    "mongoose": "^6.2.5"
+    "mongoose": "^6.4.6"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
